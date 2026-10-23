@@ -1,0 +1,279 @@
+/* Простые стили для учебного проекта "Риелторские услуги" */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    background-color: #f4f2ee;
+    color: #2b2b2b;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    padding: 20px 0 10px 0;
+    border-bottom: 3px solid #3c5a78;
+}
+
+.site-title {
+    margin: 0;
+    font-size: 28px;
+}
+
+.site-title a {
+    color: #3c5a78;
+    text-decoration: none;
+}
+
+.site-subtitle {
+    margin: 4px 0 12px 0;
+    color: #777;
+    font-style: italic;
+}
+
+nav {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 6px;
+}
+
+nav a {
+    color: #2b2b2b;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+nav a:hover {
+    background-color: #3c5a78;
+    color: #fff;
+}
+
+main {
+    padding: 24px 0;
+    min-height: 60vh;
+}
+
+h1, h2 {
+    color: #3c5a78;
+}
+
+h3 {
+    color: #444;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin: 12px 0;
+    font-size: 15px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background-color: #eef2f6;
+    color: #3c5a78;
+}
+
+tr:nth-child(even) td {
+    background-color: #fafafa;
+}
+
+form {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 18px;
+    margin: 14px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input, select, textarea {
+    display: block;
+    width: 100%;
+    max-width: 480px;
+    margin-top: 4px;
+    padding: 8px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 15px;
+    background-color: #fff;
+}
+
+button, .button {
+    display: inline-block;
+    background-color: #3c5a78;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 9px 16px;
+    font-size: 15px;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+button:hover, .button:hover {
+    background-color: #2d465e;
+}
+
+.button-danger {
+    background-color: #a94442;
+    border: none;
+    border-radius: 4px;
+    padding: 9px 16px;
+    font-size: 15px;
+    font-family: inherit;
+    cursor: pointer;
+    color: #fff;
+}
+
+.button-danger:hover {
+    background-color: #843534;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: end;
+}
+
+.filters input,
+.filters select {
+    width: auto;
+    max-width: 200px;
+    margin-top: 0;
+}
+
+.filters label {
+    margin-bottom: 0;
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-family: Verdana, sans-serif;
+    color: #fff;
+    background-color: #999;
+}
+
+.badge-available {
+    background-color: #3d8b40;
+}
+
+.badge-reserved {
+    background-color: #d9a520;
+}
+
+.badge-archived {
+    background-color: #8d8d8d;
+}
+
+.badge-deal-draft {
+    background-color: #5b7fa6;
+}
+
+.badge-deal-completed {
+    background-color: #3d8b40;
+}
+
+.badge-deal-cancelled {
+    background-color: #a94442;
+}
+
+.error-box {
+    background-color: #fdecea;
+    border: 1px solid #a94442;
+    color: #843534;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin: 12px 0;
+}
+
+.detail-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 16px 20px;
+}
+
+.actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin: 16px 0;
+}
+
+.actions form {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.muted {
+    color: #888;
+    font-size: 14px;
+}
+
+.stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 18px 0;
+}
+
+.stat-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 14px 20px;
+    min-width: 130px;
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 28px;
+    font-weight: bold;
+    color: #3c5a78;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #666;
+}
+
+footer {
+    border-top: 1px solid #ccc;
+    padding: 16px 0;
+    color: #888;
+    font-size: 14px;
+    text-align: center;
+}
