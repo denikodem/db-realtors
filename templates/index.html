@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Главная — Риелторские услуги{% endblock %}
+
+{% block content %}
+<h2>Добро пожаловать!</h2>
+<p>Это сайт агентства недвижимости. Здесь ведутся каталог объектов, база клиентов, список агентов и учёт сделок.</p>
+
+<div class="stats">
+    <div class="stat-card">
+        <span class="stat-number">{{ stats.total }}</span>
+        <span class="stat-label">Всего объектов</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">{{ stats.available }}</span>
+        <span class="stat-label">Доступно</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">{{ stats.reserved }}</span>
+        <span class="stat-label">Зарезервировано</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">{{ stats.archived }}</span>
+        <span class="stat-label">В архиве</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">{{ stats.deals }}</span>
+        <span class="stat-label">Всего сделок</span>
+    </div>
+</div>
+
+<h3>Последние объекты</h3>
+{% if recent %}
+<table>
+    <thead>
+    <tr>
+        <th>Название</th>
+        <th>Адрес</th>
+        <th>Цена, ₽</th>
+        <th>Статус</th>
+        <th>Агент</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in recent %}
+        <tr>
+            <td><a href="{{ url_for('properties.detail', property_id=p.id) }}">{{ p.title }}</a></td>
+            <td>{{ p.address }}</td>
+            <td>{{ "{:,.2f}".format(p.price) }}</td>
+            <td><span class="badge badge-{{ p.status }}">{{ p.status }}</span></td>
+            <td>{{ p.agent.full_name }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="muted">Пока нет ни одного объекта. Добавьте тестовые данные командой <code>python -m app.seed</code> или создайте объект вручную.</p>
+{% endif %}
+
+<p><a class="button" href="{{ url_for('properties.new') }}">Добавить объект</a></p>
+{% endblock %}
