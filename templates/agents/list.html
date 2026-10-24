@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Агенты{% endblock %}
+
+{% block content %}
+<h2>Агенты</h2>
+
+<p><a class="button" href="{{ url_for('agents.new') }}">Добавить агента</a></p>
+
+{% if agents %}
+<table>
+    <thead>
+    <tr>
+        <th>ФИО</th>
+        <th>Телефон</th>
+        <th>E-mail</th>
+        <th>Комиссия, %</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for a in agents %}
+        <tr>
+            <td><a href="{{ url_for('agents.detail', agent_id=a.id) }}">{{ a.full_name }}</a></td>
+            <td>{{ a.phone }}</td>
+            <td>{{ a.email or "—" }}</td>
+            <td>{{ a.commission_percent }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="muted">Агентов пока нет.</p>
+{% endif %}
+{% endblock %}

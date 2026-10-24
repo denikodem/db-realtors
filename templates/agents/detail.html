@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{{ agent.full_name }}{% endblock %}
+
+{% block content %}
+<h2>{{ agent.full_name }}</h2>
+
+<div class="detail-card">
+    <p><strong>Телефон:</strong> {{ agent.phone }}</p>
+    <p><strong>E-mail:</strong> {{ agent.email or "—" }}</p>
+    <p><strong>Комиссия:</strong> {{ agent.commission_percent }}%</p>
+
+    <p><strong>Объекты агента:</strong></p>
+    {% if agent.properties %}
+    <table>
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Адрес</th>
+            <th>Цена, ₽</th>
+            <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in agent.properties %}
+            <tr>
+                <td><a href="{{ url_for('properties.detail', property_id=p.id) }}">{{ p.title }}</a></td>
+                <td>{{ p.address }}</td>
+                <td>{{ "{:,.2f}".format(p.price) }}</td>
+                <td>{{ p.status }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="muted">Объектов пока нет.</p>
+    {% endif %}
+</div>
+
+<div class="actions">
+    <a class="button" href="{{ url_for('agents.edit', agent_id=agent.id) }}">Редактировать</a>
+    <form method="post" action="{{ url_for('agents.delete', agent_id=agent.id) }}">
+        <button type="submit" class="button-danger">Удалить</button>
+    </form>
+    <a href="{{ url_for('agents.list') }}">Назад к списку</a>
+</div>
+{% endblock %}

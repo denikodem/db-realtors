@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{% if mode == 'edit' %}Редактирование агента{% else %}Новый агент{% endif %}{% endblock %}
+
+{% block content %}
+{% macro value(field) %}{% if agent %}{{ agent[field] if agent[field] is not none else '' }}{% else %}{{ form_data.get(field, '') }}{% endif %}{% endmacro %}
+
+<h2>{% if mode == 'edit' %}Редактирование агента{% else %}Новый агент{% endif %}</h2>
+
+{% if error %}
+<div class="error-box">{{ error }}</div>
+{% endif %}
+
+<form method="post"
+      action="{% if mode == 'edit' %}{{ url_for('agents.update', agent_id=agent.id) }}{% else %}{{ url_for('agents.create') }}{% endif %}">
+
+    <label>ФИО *
+        <input type="text" name="full_name" value="{{ value('full_name') }}" required>
+    </label>
+
+    <label>Телефон *
+        <input type="text" name="phone" value="{{ value('phone') }}" required>
+    </label>
+
+    <label>E-mail
+        <input type="email" name="email" value="{{ value('email') }}">
+    </label>
+
+    <label>Комиссия, % *
+        <input type="number" name="commission_percent" step="0.01" min="0" max="100"
+               value="{{ value('commission_percent') or '3' }}" required>
+    </label>
+
+    <div class="actions">
+        <button type="submit" class="button">Сохранить</button>
+        <a href="{% if mode == 'edit' %}{{ url_for('agents.detail', agent_id=agent.id) }}{% else %}{{ url_for('agents.list') }}{% endif %}">Отмена</a>
+    </div>
+</form>
+{% endblock %}
