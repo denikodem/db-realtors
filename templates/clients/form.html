@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{% if mode == 'edit' %}Редактирование клиента{% else %}Новый клиент{% endif %}{% endblock %}
+
+{% block content %}
+{% macro value(field) %}{% if client %}{{ client[field] if client[field] is not none else '' }}{% else %}{{ form_data.get(field, '') }}{% endif %}{% endmacro %}
+
+<h2>{% if mode == 'edit' %}Редактирование клиента{% else %}Новый клиент{% endif %}</h2>
+
+{% if error %}
+<div class="error-box">{{ error }}</div>
+{% endif %}
+
+<form method="post"
+      action="{% if mode == 'edit' %}{{ url_for('clients.update', client_id=client.id) }}{% else %}{{ url_for('clients.create') }}{% endif %}">
+
+    <label>ФИО *
+        <input type="text" name="full_name" value="{{ value('full_name') }}" required>
+    </label>
+
+    <label>Телефон *
+        <input type="text" name="phone" value="{{ value('phone') }}" required>
+    </label>
+
+    <label>E-mail
+        <input type="email" name="email" value="{{ value('email') }}">
+    </label>
+
+    <label>Заметки
+        <textarea name="notes" rows="4">{{ value('notes') }}</textarea>
+    </label>
+
+    <div class="actions">
+        <button type="submit" class="button">Сохранить</button>
+        <a href="{% if mode == 'edit' %}{{ url_for('clients.detail', client_id=client.id) }}{% else %}{{ url_for('clients.list') }}{% endif %}">Отмена</a>
+    </div>
+</form>
+{% endblock %}
