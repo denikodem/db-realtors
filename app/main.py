@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.db import init_db
 from app.templating import templates
-from app.routers import agents, clients, home, properties
+from app.routers import agents, clients, deals, home, properties
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,6 +23,7 @@ app.include_router(home.router)
 app.include_router(agents.router)
 app.include_router(clients.router)
 app.include_router(properties.router)
+app.include_router(deals.router)
 
 
 @app.on_event("startup")

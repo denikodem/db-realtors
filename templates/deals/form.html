@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Новая сделка{% endblock %}
+
+{% block content %}
+<h2>Новая сделка</h2>
+
+{% if error %}
+<div class="error-box">{{ error }}</div>
+{% endif %}
+
+<form method="post" action="{{ url_for('deals.create') }}">
+
+    <label>Объект недвижимости *
+        <select name="property_id" required>
+            <option value="">— выберите объект —</option>
+            {% for p in properties %}
+                {% if p.status != 'archived' %}
+                <option value="{{ p.id }}"
+                        {% if form_data.get('property_id') == p.id or form_data.get('property_id') == p.id|string %}selected{% endif %}>
+                    {{ p.title }} — {{ p.address }} ({{ "{:,.0f}".format(p.price) }} ₽)
+                </option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </label>
+    <p class="muted">Объекты в архиве в список не включены.</p>
+
+    <label>Клиент *
+        <select name="client_id" required>
+            <option value="">— выберите клиента —</option>
+            {% for c in clients %}
+                <option value="{{ c.id }}"
+                        {% if form_data.get('client_id') == c.id or form_data.get('client_id') == c.id|string %}selected{% endif %}>
+                    {{ c.full_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label>Агент *
+        <select name="agent_id" required>
+            <option value="">— выберите агента —</option>
+            {% for a in agents %}
+                <option value="{{ a.id }}"
+                        {% if form_data.get('agent_id') == a.id or form_data.get('agent_id') == a.id|string %}selected{% endif %}>
+                    {{ a.full_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label>Дата сделки
+        <input type="date" name="deal_date" value="{{ form_data.get('deal_date') or today }}">
+    </label>
+
+    <label>Цена сделки, ₽ *
+        <input type="number" name="price" step="0.01" min="0"
+               value="{{ form_data.get('price', '') }}" required>
+    </label>
+
+    <label>Статус
+        <select name="status">
+            {% for code, name in deal_statuses.items() %}
+                {% set current = form_data.get('status', 'draft') %}
+                <option value="{{ code }}" {% if current == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <div class="actions">
+        <button type="submit" class="button">Сохранить</button>
+        <a href="{{ url_for('deals.list') }}">Отмена</a>
+    </div>
+</form>
+{% endblock %}
