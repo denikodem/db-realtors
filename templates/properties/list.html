@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Объекты недвижимости{% endblock %}
+
+{% block content %}
+<h2>Объекты недвижимости</h2>
+
+<form class="filters" method="get" action="{{ url_for('properties.list') }}">
+    <input type="text" name="query" placeholder="Поиск по названию или адресу" value="{{ query }}">
+    <select name="operation_type">
+        <option value="">Операция: любая</option>
+        {% for code, name in operation_types.items() %}
+            <option value="{{ code }}" {% if operation_type == code %}selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+    </select>
+    <select name="property_type">
+        <option value="">Тип: любой</option>
+        {% for code, name in property_types.items() %}
+            <option value="{{ code }}" {% if property_type == code %}selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="district" placeholder="Район" value="{{ district }}">
+    <input type="number" name="max_price" placeholder="Макс. цена" step="any" min="0" value="{{ max_price }}">
+    <button type="submit">Фильтровать</button>
+    <a href="{{ url_for('properties.list') }}">Сбросить</a>
+</form>
+
+<p><a class="button" href="{{ url_for('properties.new') }}">Добавить объект</a></p>
+
+{% if properties %}
+<table>
+    <thead>
+    <tr>
+        <th>Название</th>
+        <th>Тип</th>
+        <th>Операция</th>
+        <th>Адрес</th>
+        <th>Цена, ₽</th>
+        <th>Статус</th>
+        <th>Агент</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in properties %}
+        <tr>
+            <td><a href="{{ url_for('properties.detail', property_id=p.id) }}">{{ p.title }}</a></td>
+            <td>{{ property_types.get(p.property_type, p.property_type) }}</td>
+            <td>{{ operation_types.get(p.operation_type, p.operation_type) }}</td>
+            <td>{{ p.address }}{% if p.district %}<br><span class="muted">{{ p.district }} р-н</span>{% endif %}</td>
+            <td>{{ "{:,.2f}".format(p.price) }}</td>
+            <td><span class="badge badge-{{ p.status }}">{{ statuses.get(p.status, p.status) }}</span></td>
+            <td>{{ p.agent.full_name }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="muted">Объекты не найдены.</p>
+{% endif %}
+{% endblock %}

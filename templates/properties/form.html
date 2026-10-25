@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}{% if mode == 'edit' %}Редактирование объекта{% else %}Новый объект{% endif %}{% endblock %}
+
+{% block content %}
+{# value(): значение из prop (при редактировании) или из form_data (после ошибки) #}
+{% macro value(field) %}{% if prop %}{{ prop[field] if prop[field] is not none else '' }}{% else %}{{ form_data.get(field, '') }}{% endif %}{% endmacro %}
+
+<h2>{% if mode == 'edit' %}Редактирование объекта{% else %}Новый объект{% endif %}</h2>
+
+{% if error %}
+<div class="error-box">{{ error }}</div>
+{% endif %}
+
+<form method="post"
+      action="{% if mode == 'edit' %}{{ url_for('properties.update', property_id=prop.id) }}{% else %}{{ url_for('properties.create') }}{% endif %}">
+
+    <label>Название *
+        <input type="text" name="title" value="{{ value('title') }}" required>
+    </label>
+
+    <label>Описание
+        <textarea name="description" rows="4">{{ value('description') }}</textarea>
+    </label>
+
+    <label>Тип объекта *
+        <select name="property_type">
+            {% for code, name in property_types.items() %}
+                {% set current = prop.property_type if prop else form_data.get('property_type', '') %}
+                <option value="{{ code }}" {% if current == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label>Тип операции *
+        <select name="operation_type">
+            {% for code, name in operation_types.items() %}
+                {% set current = prop.operation_type if prop else form_data.get('operation_type', '') %}
+                <option value="{{ code }}" {% if current == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label>Адрес *
+        <input type="text" name="address" value="{{ value('address') }}" required>
+    </label>
+
+    <label>Район
+        <input type="text" name="district" value="{{ value('district') }}">
+    </label>
+
+    <label>Цена, ₽ *
+        <input type="number" name="price" step="0.01" min="0" value="{{ value('price') }}" required>
+    </label>
+
+    <label>Комнат
+        <input type="number" name="rooms" step="1" min="0" value="{{ value('rooms') }}">
+    </label>
+
+    <label>Площадь, кв. м
+        <input type="number" name="area" step="0.01" min="0" value="{{ value('area') }}">
+    </label>
+
+    <label>Статус
+        <select name="status">
+            {% for code, name in statuses.items() %}
+                {% set current = prop.status if prop else form_data.get('status', 'available') %}
+                <option value="{{ code }}" {% if current == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label>Агент *
+        <select name="agent_id" required>
+            <option value="">— выберите агента —</option>
+            {% for a in agents %}
+                {% set current = prop.agent_id if prop else form_data.get('agent_id', '') %}
+                <option value="{{ a.id }}" {% if current == a.id or current == a.id|string %}selected{% endif %}>
+                    {{ a.full_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+
+    {% if not agents %}
+        <p class="muted">Сначала добавьте хотя бы одного агента — без агента объект создать нельзя.</p>
+    {% endif %}
+
+    <div class="actions">
+        <button type="submit" class="button">Сохранить</button>
+        <a href="{% if mode == 'edit' %}{{ url_for('properties.detail', property_id=prop.id) }}{% else %}{{ url_for('properties.list') }}{% endif %}">Отмена</a>
+    </div>
+</form>
+{% endblock %}

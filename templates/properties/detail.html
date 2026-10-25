@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ prop.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ prop.title }}</h2>
+
+<p><span class="badge badge-{{ prop.status }}">{{ statuses.get(prop.status, prop.status) }}</span></p>
+
+<div class="detail-card">
+    <p><strong>Тип объекта:</strong> {{ property_types.get(prop.property_type, prop.property_type) }}</p>
+    <p><strong>Операция:</strong> {{ operation_types.get(prop.operation_type, prop.operation_type) }}</p>
+    <p><strong>Адрес:</strong> {{ prop.address }}</p>
+    <p><strong>Район:</strong> {{ prop.district or "—" }}</p>
+    <p><strong>Цена:</strong> {{ "{:,.2f}".format(prop.price) }} ₽</p>
+    <p><strong>Комнат:</strong> {{ prop.rooms if prop.rooms is not none else "—" }}</p>
+    <p><strong>Площадь:</strong> {{ prop.area if prop.area is not none else "—" }} кв. м</p>
+    <p><strong>Агент:</strong>
+        <a href="{{ url_for('agents.detail', agent_id=prop.agent.id) }}">{{ prop.agent.full_name }}</a>
+        ({{ prop.agent.phone }})
+    </p>
+    <p><strong>Описание:</strong></p>
+    <p>{{ prop.description or "Описания нет." }}</p>
+</div>
+
+<div class="actions">
+    <a class="button" href="{{ url_for('properties.edit', property_id=prop.id) }}">Редактировать</a>
+    <form method="post" action="{{ url_for('properties.delete', property_id=prop.id) }}">
+        <button type="submit" class="button-danger">Удалить</button>
+    </form>
+    <a href="{{ url_for('properties.list') }}">Назад к списку</a>
+</div>
+{% endblock %}
