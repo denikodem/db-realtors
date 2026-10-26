@@ -20,9 +20,9 @@ app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
 # Роутеры
 app.include_router(home.router)
-app.include_router(agents.router)
-app.include_router(clients.router)
 app.include_router(properties.router)
+app.include_router(clients.router)
+app.include_router(agents.router)
 app.include_router(deals.router)
 
 

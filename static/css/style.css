@@ -155,6 +155,16 @@ button:hover, .button:hover {
     background-color: #843534;
 }
 
+.inline-form {
+    display: inline;
+    margin: 0;
+}
+
+.inline-form .button-danger {
+    padding: 5px 12px;
+    font-size: 13px;
+}
+
 .filters {
     display: flex;
     flex-wrap: wrap;

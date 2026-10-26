@@ -181,3 +181,12 @@ def create_deal(db: Session, data: dict) -> models.Deal:
 
 def count_deals(db: Session) -> int:
     return db.query(func.count(models.Deal.id)).scalar()
+
+
+def get_deal(db: Session, deal_id: int) -> models.Deal | None:
+    return db.get(models.Deal, deal_id)
+
+
+def delete_deal(db: Session, deal: models.Deal) -> None:
+    db.delete(deal)
+    db.commit()

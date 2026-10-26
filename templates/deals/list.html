@@ -18,6 +18,7 @@
         <th>Агент</th>
         <th>Цена, ₽</th>
         <th>Статус</th>
+        <th>&nbsp;</th>
     </tr>
     </thead>
     <tbody>
@@ -30,6 +31,12 @@
             <td><a href="{{ url_for('agents.detail', agent_id=d.agent_id) }}">{{ d.agent.full_name }}</a></td>
             <td>{{ "{:,.2f}".format(d.price) }}</td>
             <td><span class="badge badge-deal-{{ d.status }}">{{ deal_statuses.get(d.status, d.status) }}</span></td>
+            <td>
+                <form class="inline-form" method="post" action="{{ url_for('deals.delete', deal_id=d.id) }}"
+                      onsubmit="return confirm('Удалить сделку №{{ d.id }}?');">
+                    <button type="submit" class="button-danger">Удалить</button>
+                </form>
+            </td>
         </tr>
     {% endfor %}
     </tbody>

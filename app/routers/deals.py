@@ -1,8 +1,9 @@
-"""Роутер сделок: просмотр списка и создание новой сделки."""
+"""Роутер сделок: просмотр списка, создание и удаление сделки."""
 from datetime import date
 
 from fastapi import APIRouter, Depends, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.db import get_db
@@ -107,4 +108,21 @@ async def create_deal(request: Request, db: Session = Depends(get_db)):
             "status": status,
         },
     )
+    return RedirectResponse(url=request.url_for("deals.list"), status_code=303)
+
+
+@router.post("/{deal_id}/delete", name="deals.delete")
+def delete_deal(request: Request, deal_id: int, db: Session = Depends(get_db)):
+    deal = crud.get_deal(db, deal_id)
+    if deal is None:
+        return HTMLResponse("<h1>404</h1><p>Сделка не найдена.</p>", status_code=404)
+    try:
+        crud.delete_deal(db, deal)
+    except IntegrityError:
+        db.rollback()
+        return HTMLResponse(
+            "<h1>Удаление невозможно</h1>"
+            "<p>Не удалось удалить сделку из-за связанных данных в базе.</p>",
+            status_code=400,
+        )
     return RedirectResponse(url=request.url_for("deals.list"), status_code=303)
